@@ -1,0 +1,487 @@
+openapi: 3.1.0
+info:
+  title: "GreenLake Colo API"
+  version: 0.0.1
+  license:
+    name: HPE License
+    url: https://www.hpe.com/us/en/software/licensing.html
+paths:
+  /providers:
+    get:
+      summary: Lists providers
+      description: Lists providers with filtered by query strings.
+      responses:
+        200:
+          description: List of providers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/providers"
+          links:
+            # GET /providers/{providerId}
+            GetProviderById:
+              description: Return a link to query the provider by id
+              operationId: getProviderById
+              parameters:
+                regionId: $response.body#/providerId
+    post:
+      summary: Create a new provider
+      description: Creates a new provider entity and returns the object.
+      operationId: post-providers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+  /providers/{providerID}:
+    get:
+      summary: List provider by id
+      description: List a provider by id
+      operationId: getProviderById
+      parameters:
+        - $ref: "#/components/parameters/providerId"
+      responses:
+        200:
+          description: List provider
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/providerA"
+    put:
+      summary: List provider by id
+      description: List a provider by id
+    delete:
+      summary: List provider by id
+      description: List a provider by id
+  /regions:
+    get:
+      summary: List all locations for a specific provier
+      description: List all locations for a specific provider
+      responses:
+        200:
+          description: List all regions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/regionGetObject"
+    post:
+      summary: List all locations for a specific provier
+      description: List all locations for a specific provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/regionPostRequestBody"
+      responses:
+        201:
+          description: Create a new region
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  regionId:
+                    $ref: "#/components/schemas/regionId"
+          links:
+            # GET /regions/{regionId}
+            GetRegionByRegionId:
+              description: Return a link to query the region by id
+              operationId: getRegionById
+              parameters:
+                regionId: $response.body#/regionId
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /regions/{regionId}:
+    get:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+      operationId: getRegionById
+      parameters:
+        - in: path
+          name: regionId
+          required: true
+          schema:
+            $ref: "#/components/schemas/regionId"
+      responses:
+        200:
+          description: Return info for the specified regionId
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/regionGetObject"
+    put:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+    delete:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+  /regions/{regionId}/zones:
+    get:
+      summary: List all locations for a specific provier
+      description: List all locations for a specific provider
+      responses:
+        200:
+          description: Return list of zones for specificed regionId
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/zonesListObject"
+    post:
+      summary: List all locations for a specific provier
+      description: List all locations for a specific provider
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/zonePostRequestBody"
+      responses:
+        201:
+          description: Create a new zone within a sepcified region
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  zoneId:
+                    $ref: "#/components/schemas/zoneId"
+          links:
+            # GET /zones/{zoneId}
+            GetZoneByZoneId:
+              description: Return a link to query the zone by zoneId
+              operationId: getZoneById
+              parameters:
+                zoneId: $response.body#/zoneId
+        400:
+          $ref: "#/components/responses/BadRequest"
+  /zones/{zoneId}:
+    get:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+      operationId: getZoneById
+      parameters:
+        - name: zoneId
+          in: path
+          required: true
+          description: UUID of the Zone
+          schema:
+            $ref: "#/components/schemas/zoneId"
+      responses:
+        200:
+          description: Return info for the specified regionId
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/zoneGetObject"
+    put:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+    delete:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+  /zones/{zoneId}/deployments:
+    get:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+    post:
+      summary: List all locations for a specific provier
+      description: List all locations for a specific provider
+  /deployments/{deploymentId}:
+    get:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+    put:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+    delete:
+      summary: List location by id for a specific provider
+      description: List all locations for a specific provider
+components:
+  parameters:
+    providerId:
+      description: UUID of the Provider
+      name: providerId
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/providerId"
+    regionId:
+      description: UUID of the Region
+      name: regionId
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/regionId"
+  responses:
+    BadRequest:
+      description: HTTPBadRequest
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    providerId:
+      type: uuid
+      maxlength: 36
+      example: 8de80694-1b9b-4cb8-9552-35205da3d4c6
+    regionId:
+      type: uuid
+      maxlength: 36
+      example: 255cc310-cadf-464f-8d6e-9aa1db4b31d3
+    zoneId:
+      type: uuid
+      maxlength: 36
+      example: 03d78af8-895b-4b12-992b-09fd8abadc2a
+    deploymentId:
+      type: uuid
+      maxlength: 36
+      example: 780e39ec-cdfd-4439-a51a-8c4f937393c4
+    providerName:
+      type: string
+      example: Equinix
+    providers:
+      type: array
+      items:
+        type: object
+        properties:
+          providerId:
+            $ref: "#/components/schemas/providerId"
+          name:
+            $ref: "#/components/schemas/providerName"
+      example:
+        items:
+          - id: 8de80694-1b9b-4cb8-9552-35205da3d4c6
+            name: Equinix
+          - id: b4278fbe-4ee2-4935-b2b1-d600abccab60
+            name: Digital Realty
+    providerA:
+      type: object
+      properties:
+        id:
+          type: string
+          maxlength: 36
+          example: 8de80694-1b9b-4cb8-9552-35205da3d4c6
+        name:
+          type: string
+          maxlength: 36
+          example: Equinix
+    regionGetObject:
+      type: object
+      properties:
+        regionId:
+          $ref: "#/components/schemas/regionId"
+        providerId:
+          $ref: "#/components/schemas/providerId"
+        regionName:
+          $ref: "#/components/schemas/regionName"
+        regionCode:
+          $ref: "#/components/schemas/regionCode"
+        geoJSON:
+          $ref: "#/components/schemas/regionGeoJSON"
+        networkServiceAPI:
+          type: string
+          example: "https://dc.provider.com:8000/api/v1"
+        zones:
+          $ref: "#/components/schemas/zonesListObject"
+    zonesListObject:
+      type: object
+      properties:
+        zoneIds:
+          type: array
+          items:
+            - zoneId:
+              type: string
+      example:
+        zoneIds:
+          - 93a01c17-2254-49d0-89c5-da9c1f182716
+          - f8cadbce-1528-4934-a322-341ac635f7b8
+          - ea62e090-4b62-4d1c-aadd-4d5f5caee69c
+    deploymentsListObject:
+      type: object
+      properties:
+        deploymentIds:
+          type: array
+          items:
+            - deploymentId:
+              type: string
+      example:
+        deploymentIds:
+          - b9ed26cd-2c86-47da-a2ac-dd9b4fd3308c
+          - 75e5751a-1307-4259-8058-1c87db7247a8
+    zoneName:
+      type: string
+      example: DC15
+    zoneGetObject:
+      type: object
+      properties:
+        providerId:
+          $ref: "#/components/schemas/providerId"
+        regionId:
+          $ref: "#/components/schemas/regionId"
+        zoneId:
+          $ref: "#/components/schemas/zoneId"
+        zoneName:
+          $ref: "#/components/schemas/zoneName"
+        geoJSON:
+          $ref: "#/components/schemas/zoneGeoJSON"
+        infoURL:
+          type: string
+          example: "https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc15"
+        physicalAddress:
+          $ref: "#/components/schemas/physicalAddress"
+        NetworkServiceEndpoint:
+          $ref: "#/components/schemas/networkServiceEndpoint"
+        deployments:
+          $ref: "#/components/schemas/deploymentsListObject"
+    zonePostRequestBody:
+      type: object
+      properties:
+        regionId:
+          required: true
+          $ref: "#/components/schemas/regionId"
+        zoneName:
+          required: true
+          $ref: "#/components/schemas/zoneName"
+        geoJSON:
+          required: true
+          $ref: "#/components/schemas/zoneGeoJSON"
+        infoURL:
+          required: false
+          type: string
+          example: "https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc15"
+        physicalAddress:
+          required: true
+          $ref: "#/components/schemas/physicalAddress"
+        networkServiceEndpoint:
+          required: true
+          $ref: "#/components/schemas/networkServiceEndpoint"
+    networkServiceEndpoint:
+      type: string
+      example: "https://dc15.network.greenlake.hpe.com:8000/api/v1"
+    physicalAddress:
+      type: object
+      properties:
+        address:
+          type: string
+        city:
+          type: String
+        state:
+          type: String
+          minLength: 2
+          maxLength: 2
+        stateFull:
+          type: String
+        zipCode:
+          type: String
+        timeZone:
+          type: string
+        country:
+          type: string
+        phoneNumber:
+          type: string
+      example:
+        address: 44780 Performance Circle
+        city: Ashburn
+        state: VA
+        stateFull: Virginia
+        zipCode: "20147"
+        timeZone: "UTC-5: Eastern Standard Time (EST)"
+        country: United States of America
+        phoneNumber: "+1.866.378.4649"
+    regionPostRequestBody:
+      type: object
+      properties:
+        providerId:
+          required: true
+          $ref: "#/components/schemas/providerId"
+        regionName:
+          required: true
+          $ref: "#/components/schemas/regionName"
+        regionCode:
+          $ref: "#/components/schemas/regionCode"
+        geoJSON:
+          $ref: "#/components/schemas/regionGeoJSON"
+        networkServiceAPI:
+          type: uri
+          example: "https://dc.provider.com:8000/api/v1"
+    zoneObject:
+      type: object
+      properties:
+        zoneId:
+          $ref: "#/components/schemas/zoneId"
+        deployments:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/deploymentObject"
+    deploymentObject:
+      type: object
+      properties:
+        deploymentId:
+          $ref: "#/components/schemas/deploymentId"
+    regionCode:
+      type: string
+      maxlength: 2
+      example: DC
+    regionName:
+      type: string
+      example: Washington, D.C.
+    zoneGeoJSON:
+      type: object
+      properties: {}
+    regionGeoJSON:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["FeatureCollection"]
+        features:
+          type: Array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: ["Feature"]
+              properties:
+                type: object
+              geometry:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: ["LineString"]
+                  coordinates:
+                    type: array
+                    items:
+                      type: array
+                      maxItems: 2
+                      minItems: 2
+                      items:
+                        - type: string
+                          description: Latitude
+                        - type: string
+                          description: Longitude
+                      example: ["-77.51966529957129", "39.054274978496466"]
+      example:
+        type: FeatureCollection
+        features:
+          - type: Feature
+            properties: {}
+            geometry:
+              coordinates:
+                - ["-77.51966529957129", "39.054274978496466"]
+                - ["-77.5302112458104", "38.79121292873063"]
+                - ["-77.52032442121123", "39.054274978496466"]
+              type: LineString
