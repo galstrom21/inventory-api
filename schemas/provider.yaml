@@ -1,0 +1,35 @@
+components:
+  schemas:
+    providerId:
+      type: uuid
+      maxlength: 36
+      example: 8de80694-1b9b-4cb8-9552-35205da3d4c6
+    providerName:
+      type: string
+      example: Equinix
+    providers:
+      type: array
+      items:
+        type: object
+        properties:
+          providerId:
+            $ref: "#/components/schemas/providerId"
+          name:
+            $ref: "#/components/schemas/providerName"
+      example:
+        items:
+          - id: 8de80694-1b9b-4cb8-9552-35205da3d4c6
+            name: Equinix
+          - id: b4278fbe-4ee2-4935-b2b1-d600abccab60
+            name: Digital Realty
+    providerA:
+      type: object
+      properties:
+        id:
+          type: string
+          maxlength: 36
+          example: 8de80694-1b9b-4cb8-9552-35205da3d4c6
+        name:
+          type: string
+          maxlength: 36
+          example: Equinix

@@ -1,0 +1,92 @@
+components:
+  schemas:
+    regionId:
+      type: uuid
+      maxlength: 36
+      example: 255cc310-cadf-464f-8d6e-9aa1db4b31d3
+    regionGetObject:
+      type: object
+      properties:
+        regionId:
+          $ref: "#/components/schemas/regionId"
+        providerId:
+          $ref: "provider.yaml#/components/schemas/providerId"
+        regionName:
+          $ref: "#/components/schemas/regionName"
+        regionCode:
+          $ref: "#/components/schemas/regionCode"
+        geoJSON:
+          $ref: "#/components/schemas/regionGeoJSON"
+        networkServiceAPI:
+          type: string
+          example: "https://dc.provider.com:8000/api/v1"
+        zones:
+          $ref: "zone.yaml#/components/schemas/zonesListObject"
+    regionPostRequestBody:
+      type: object
+      properties:
+        providerId:
+          required: true
+          $ref: "provider.yaml#/components/schemas/providerId"
+        regionName:
+          required: true
+          $ref: "#/components/schemas/regionName"
+        regionCode:
+          $ref: "#/components/schemas/regionCode"
+        geoJSON:
+          $ref: "#/components/schemas/regionGeoJSON"
+        networkServiceAPI:
+          type: uri
+          example: "https://dc.provider.com:8000/api/v1"
+    regionCode:
+      type: string
+      maxlength: 2
+      example: DC
+    regionName:
+      type: string
+      example: Washington, D.C.
+    regionGeoJSON:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["FeatureCollection"]
+        features:
+          type: Array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: ["Feature"]
+              properties:
+                type: object
+              geometry:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: ["LineString"]
+                  coordinates:
+                    type: array
+                    items:
+                      type: array
+                      maxItems: 2
+                      minItems: 2
+                      items:
+                        - type: string
+                          description: Latitude
+                        - type: string
+                          description: Longitude
+                      example: ["-77.51966529957129", "39.054274978496466"]
+      example:
+        type: FeatureCollection
+        features:
+          - type: Feature
+            properties: {}
+            geometry:
+              coordinates:
+                - ["-77.51966529957129", "39.054274978496466"]
+                - ["-77.5302112458104", "38.79121292873063"]
+                - ["-77.52032442121123", "39.054274978496466"]
+              type: LineString

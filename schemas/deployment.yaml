@@ -1,0 +1,88 @@
+components:
+  schemas:
+    deploymentId:
+      type: uuid
+      maxlength: 36
+      example: 780e39ec-cdfd-4439-a51a-8c4f937393c4
+    deploymentsListObject:
+      type: object
+      properties:
+        deploymentIds:
+          type: array
+          items:
+            - deploymentId:
+              $ref: "#/components/schemas/deploymentId"
+      example:
+        deploymentIds:
+          - b9ed26cd-2c86-47da-a2ac-dd9b4fd3308c
+          - 75e5751a-1307-4259-8058-1c87db7247a8
+    deploymentGetObject:
+      type: object
+      properties:
+        deploymentId:
+          $ref: "#/components/schemas/deploymentId"
+        cageId:
+          $ref: "#/components/schemas/cageId"
+        cageType:
+          type: string
+          enum: ["Standard Mesh"]
+        containmentType:
+          type: string
+          enum:
+            - "Hot Aisle Containment"
+            - "Cold Aisle Containment"
+            - "None"
+        shipToAddress:
+          type: string
+          example: |
+            HPE_Private Cloud Enterprise / DC15:05:834190
+            C/O ColoProvider
+            44780 Performance Circle
+            Ashburn, VA 20147
+        currentDrawCap:
+          type: string
+          example: "120 kVA"
+        securityInfo:
+          type: object
+          properties:
+            secureEntry:
+              type: boolean
+              example: True
+            secureEntryType:
+              type: string
+              example: "BMR (fingerprint)"
+            cctvEnabled:
+              type: boolean
+              example: True
+        overheadInfrastructure:
+          type: object
+          properties:
+            OverheadSuspendedLadderRack:
+              type: object
+              properties:
+                size:
+                  type: string
+                  example: "12 inch"
+                count:
+                  type: integer
+                  example: 2
+            FiberTray:
+              type: object
+              properties:
+                size:
+                  type: string
+                  example: "6 inch"
+                count:
+                  type: integer
+                  example: 3
+            ExpressExits:
+              type: object
+              properties:
+                size:
+                  type: string
+                  example: "4 inch"
+                count:
+                  type: integer
+                  example: 5
+        cabinetList:
+          $ref: "schemas/cabinet.yaml#/components/schemas/cabinetListObject"

@@ -1,0 +1,150 @@
+components:
+  schemas:
+    zoneId:
+      type: uuid
+      maxlength: 36
+      example: 03d78af8-895b-4b12-992b-09fd8abadc2a
+    zonesListObject:
+      type: object
+      properties:
+        zoneIds:
+          type: array
+          items:
+            - zoneId:
+              type: string
+      example:
+        zoneIds:
+          - 93a01c17-2254-49d0-89c5-da9c1f182716
+          - f8cadbce-1528-4934-a322-341ac635f7b8
+          - ea62e090-4b62-4d1c-aadd-4d5f5caee69c
+    zoneName:
+      type: string
+      example: DC15
+    zoneGetObject:
+      type: object
+      properties:
+        regionId:
+          $ref: "region.yaml#/components/schemas/regionId"
+        zoneId:
+          $ref: "#/components/schemas/zoneId"
+        zoneName:
+          $ref: "#/components/schemas/zoneName"
+        geoJSON:
+          $ref: "#/components/schemas/zoneGeoJSON"
+        infoURL:
+          type: string
+          example: "https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc15"
+        physicalAddress:
+          $ref: "#/components/schemas/physicalAddress"
+        NetworkServiceEndpoint:
+          $ref: "#/components/schemas/networkServiceEndpoint"
+        deployments:
+          $ref: "deployment.yaml#/components/schemas/deploymentsListObject"
+    zonePostRequestBody:
+      type: object
+      properties:
+        regionId:
+          required: true
+          $ref: "#/components/schemas/regionId"
+        zoneName:
+          required: true
+          $ref: "#/components/schemas/zoneName"
+        geoJSON:
+          required: true
+          $ref: "#/components/schemas/zoneGeoJSON"
+        infoURL:
+          required: false
+          type: string
+          example: "https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc15"
+        physicalAddress:
+          required: true
+          $ref: "#/components/schemas/physicalAddress"
+        networkServiceEndpoint:
+          required: true
+          $ref: "#/components/schemas/networkServiceEndpoint"
+    networkServiceEndpoint:
+      type: string
+      example: "https://dc15.network.greenlake.hpe.com:8000/api/v1"
+    physicalAddress:
+      type: object
+      properties:
+        address:
+          type: string
+        city:
+          type: String
+        state:
+          type: String
+          minLength: 2
+          maxLength: 2
+        stateFull:
+          type: String
+        zipCode:
+          type: String
+        timeZone:
+          type: string
+        country:
+          type: string
+        phoneNumber:
+          type: string
+      example:
+        address: 44780 Performance Circle
+        city: Ashburn
+        state: VA
+        stateFull: Virginia
+        zipCode: "20147"
+        timeZone: "UTC-5: Eastern Standard Time (EST)"
+        country: United States of America
+        phoneNumber: "+1.866.378.4649"
+    zoneObject:
+      type: object
+      properties:
+        zoneId:
+          $ref: "#/components/schemas/zoneId"
+        deployments:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/deploymentObject"
+    zoneGeoJSON:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: ["FeatureCollection"]
+        features:
+          type: Array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: ["Feature"]
+              properties:
+                type: object
+              geometry:
+                type: object
+                properties:
+                  coordinates:
+                    type: array
+                    items:
+                      type: array
+                      maxItems: 2
+                      minItems: 2
+                      items:
+                        - type: string
+                          description: Latitude
+                        - type: string
+                          description: Longitude
+#                      example: ["-77.45025145767278", "39.022466659103856"]
+                  type:
+                    type: String
+                    enum: ["Point", "LineString"]
+      example:
+        type: FeatureCollection
+        features:
+          - type: Feature
+            properties: {}
+            geometry:
+              coordinates:
+                - ["-77.45025145767278", "39.022466659103856"]
+              type: Point

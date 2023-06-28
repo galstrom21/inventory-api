@@ -1,0 +1,82 @@
+components:
+  schemas:
+    cageId:
+      type: uuid
+      maxlength: 36
+      example: 5fb9a33a-a5ca-4690-969b-3bf74327057e
+    cageGetObject:
+    cabinetId:
+      type: uuid
+      maxlength: 36
+      example: 963137bf-8350-4b55-ba59-fb55ddc10a39
+    tenantId:
+      type: string
+      description: This is a HPE GL Tenant ID
+      example: HPE-PCE-Demo-DC15-j4TkU7iSceZDaYEswvOR
+    cabinetPositionName:
+      type: string
+      example: "101"
+    cabinetPositionIsPopulated:
+      type: boolean
+      example: True
+    cabinetListObject:
+      type: array
+      items:
+        cabinetId:
+          $ref: "#/components/schemas/cabinetId"
+      example:
+        - 963137bf-8350-4b55-ba59-fb55ddc10a39
+        - 2c2e53e9-8e90-4040-85e4-aa3ba87bcf06
+        - a910a22d-27db-45b6-906f-17876ea09827
+        - db1a4b26-0c29-412a-bd41-d2498d63cbf4
+        - 7dda3ba9-d910-4f95-b64d-dc4d695ad72b
+        - 96eb0e5f-ad3a-4941-88db-b28cc6ac8c20
+        - db698085-55a8-4c4f-a733-e9893dca10cf
+        - 35ad690b-1110-4270-b63a-a67eb2670ab1
+        - 2eb00e5e-0c72-4aa6-bb4b-d4595205db8e
+        - 9eb2b0f9-8201-4b8f-aeee-3331d0cf2310
+    circuitType:
+      type: string
+      enum:
+        - "3Ph 32A/415V"
+        - "3Ph 32A/400V"
+    circuitReceptacleType:
+      type: string
+      enum: ["IEC 60309 5-wire"]
+    circuitCount:
+      type: integer
+      example: 2
+    powerInformation:
+      type: object
+      properties:
+        circuitType:
+          $ref: "#/components/schemas/circuitType"
+        circuitReceptacleType:
+          $ref: "#/components/schemas/circuitReceptacleType"
+        circuitCount:
+          $ref: "#/components/schemas/circuitCount"
+    cabinetGetObject:
+      type: object
+      properties:
+        cageId:
+          $ref: "#/components/schemas/cageId"
+        cabinetId:
+          $ref: "#/components/schemas/cabinetId"
+        cabinetPositionName:
+          $ref: "#/components/schemas/cabinetPositionName"
+        cabinetPositionIsPopulated:
+          $ref: "#/components/schemas/cabinetPositionIsPopulated"
+        allocated:
+          type: boolean
+        allocatedTenantId:
+          $ref: "#/components/schemas/tenantId"
+        isPowered:
+          type: boolean
+        powerInformation:
+          $ref: "#/components/schemas/powerInformation"
+        totalRackUnits:
+          type: integer
+          enum: ["42"]
+        rackUnitPopulationInfo:
+          type: object
+          properties:

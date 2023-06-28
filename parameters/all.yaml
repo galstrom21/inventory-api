@@ -1,0 +1,16 @@
+components:
+  parameters:
+    providerId:
+      description: UUID of the Provider
+      name: providerId
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/providerId"
+    regionId:
+      description: UUID of the Region
+      name: regionId
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/regionId"
